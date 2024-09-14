@@ -2,7 +2,32 @@
 export const POKEMON_DATA_SIZE = 100;
 export const POKEMON_SUBSTRUCTURE_SIZE = 12;
 
-export const OFFSETS = {
+interface PokemonStructure {
+  pid: number
+  otid: number
+  nickname: string
+  language: number
+  flags: number[]
+  otname: string
+  marking: number[]
+  checksum: number
+  unused: any
+  data: PokemonSubstructure[]
+  status: number
+  level: number
+  mailId: number
+  currentHP: number
+  totalHP: number
+  attack: number
+  defense: number
+  speed: number
+  spAttack: number
+  spDefense: number
+}
+
+export type PokemonAttributes = keyof PokemonStructure;
+
+export const OFFSETS: Record<PokemonAttributes, number> = {
   pid: 0x00,
   otid: 0x04,
   nickname: 0x08,
@@ -24,8 +49,30 @@ export const OFFSETS = {
   spAttack: 0x60,
   spDefense: 0x62,
 }
+export const SIZES: Record<PokemonAttributes, number> = {
+  pid: 4,
+  otid: 4,
+  nickname: 10,
+  language: 1,
+  flags: 1,
+  otname: 7,
+  marking: 1,
+  checksum: 2,
+  unused: 2,
+  data: 48,
+  status: 4,
+  level: 1,
+  mailId: 1,
+  currentHP: 2,
+  totalHP: 2,
+  attack: 2,
+  defense: 2,
+  speed: 2,
+  spAttack: 2,
+  spDefense: 2,
+}
 
-export interface PokemonData {
+export interface PokemonData extends PokemonStructure {
   raw: ArrayBuffer
   decrypted: ArrayBuffer
 
@@ -66,7 +113,7 @@ export interface PokemonSubstructureG extends PokemonSubstructure {
 
 // https://bulbapedia.bulbagarden.net/wiki/Character_encoding_(Generation_III)
 export const WESTERN_CHARACTER_SET = [
-// 0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
+  // 0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
   "", "À", "Á", "Â", "Ç", "È", "É", "Ê", "Ë", "Ì", " ", "Î", "Ï", "Ò", "Ó", "Ô",
   "Œ", "Ù", "Ú", "Û", "Ñ", "ß", "à", "á", " ", "ç", "è", "é", "ê", "ë", "ì", " ",
   "î", "ï", "ò", "ó", "ô", "œ", "ù", "ú", "û", "ñ", "º", "ª", "ᵉʳ", "&", "+", " ",
@@ -78,10 +125,10 @@ export const WESTERN_CHARACTER_SET = [
   "*", "*", "*", "*", "ᵉ", "<", ">", " ", " ", " ", " ", " ", " ", " ", " ", " ",
   " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ",
   "ʳᵉ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "!", "?", ".", "-", "･",
-  "‥", "“", "”", "‘",	"'", "♂", "♀", "$",	",", "×", "/", "A", "B", "C", "D", "E",
+  "‥", "“", "”", "‘", "'", "♂", "♀", "$", ",", "×", "/", "A", "B", "C", "D", "E",
   "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U",
   "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
   "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "►",
   ":", "Ä", "Ö", "Ü", "ä", "ö", "ü", "\\", "\\", "\\", "", "", "", "", "\n", "",
-// 0    1    2    3    4    5    6    7     8     9    A   B   C   D    E    F
+  // 0    1    2    3    4    5    6    7     8     9    A   B   C   D    E    F
 ];

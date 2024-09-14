@@ -12,8 +12,8 @@ function PokemonList(props: PokemonListProps) {
   const pokemons = props.pokemonsData.map(data => parsePokemonData(data));
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <div>
+    <div>
+      <div className='flex-row gap'>
         {pokemons?.map((pokemon, index) => (
           <div
             key={index}
@@ -28,7 +28,6 @@ function PokemonList(props: PokemonListProps) {
               :
               <p>BAD EGG: checksum mismatch</p>
             }
-
           </div>
         ))}
       </div>

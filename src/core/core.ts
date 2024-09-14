@@ -10,8 +10,9 @@ function isLittleEndian() {
 const IS_LITTLE_ENDIAN = isLittleEndian();
 console.log("little endian", IS_LITTLE_ENDIAN);
 
-function toHex(number: number): string {
-  return "0x" + number.toString(16).padStart(2, "0");
+export function toHex(arg: number | string): string {
+  if (typeof arg === "string") return arg;
+  return "0x" + arg.toString(16).padStart(2, "0");
 }
 
 function read_u8_little_endian(memory: ArrayBuffer, b: number): number {
@@ -33,9 +34,9 @@ function read_string_little_endian(memory: ArrayBuffer, b: number, size: number,
   const u8Array = new Uint8Array(memory.slice(b, b + size));
   const out: string[] = [];
   let i = 0;
-  while(i < size) {
-    if(u8Array[i] === 0xFF) break;
-    
+  while (i < size) {
+    if (u8Array[i] === 0xFF) break;
+
     out.push(charSet[u8Array[i]]);
     i++;
   }
@@ -64,7 +65,7 @@ function CryptArray3(ekm: ArrayBuffer, seed: number): ArrayBuffer {
   for (let source32 of sourceArray) {
     destArray[index] = source32;
     const offset = index * 4;
-    if(OFFSETS.data <= offset && offset < OFFSETS.status) {
+    if (OFFSETS.data <= offset && offset < OFFSETS.status) {
       destArray[index] ^= seed;
     }
     index += 1;
@@ -104,7 +105,7 @@ export function parsePokemonData(data: ArrayBuffer): PokemonData | null {
   computedChecksum = checksum(decryptedData);
   console.log('checksum after decryption', toHex(computedChecksum));
 
-  if(storedChecksum !== computedChecksum) {
+  if (storedChecksum !== computedChecksum) {
     console.error(`Checksum mismatch with the stored at offset ${toHex(OFFSETS.checksum)}`, toHex(storedChecksum));
     return null;
   } else {
@@ -120,9 +121,10 @@ export function parsePokemonData(data: ArrayBuffer): PokemonData | null {
     nickname: read_string_little_endian(decryptedData, OFFSETS.nickname, 10),
     language: read_u8_little_endian(decryptedData, OFFSETS.language),
     flags: [],
-    otname: read_string_little_endian(decryptedData, OFFSETS.nickname, 7),
+    otname: read_string_little_endian(decryptedData, OFFSETS.otname, 7),
     marking: [],
     checksum: read_u16_little_endian(decryptedData, OFFSETS.checksum),
+    unused: null,
     data: [],
     status: read_u32_little_endian(decryptedData, OFFSETS.status),
     level: read_u8_little_endian(decryptedData, OFFSETS.level),
