@@ -1,0 +1,35 @@
+table.hex-viewer {
+  font-family: monospace;
+  font-size: 1rem;
+  background-color: #fff;
+  padding: 6px 10px 12px 10px;
+}
+table.hex-viewer.uppercase {
+  text-transform: uppercase;
+}
+
+table.hex-viewer th {
+  color: rgb(198, 203, 209);
+  font-weight: initial;
+}
+table.hex-viewer thead th {
+  padding-bottom: 2px;
+}
+table.hex-viewer tbody tr th {
+  padding-right: 4px;
+}
+table.hex-viewer tbody td {
+  color: rgb(36, 41, 46);
+}
+table.hex-viewer tbody td:nth-child(2n) {
+  background-color: #ecedee;
+}
+
+table.hex-viewer tbody td::selection, table.hex-viewer tbody td.selected {
+  background-color: #5dadfc;
+  color: #586069;
+}
+table.hex-viewer tbody th::selection {
+  background-color: transparent;
+  color: #586069;
+}

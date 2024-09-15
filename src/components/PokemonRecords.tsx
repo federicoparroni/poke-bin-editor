@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { OFFSETS, PokemonAttributes, PokemonData, SIZES } from '../models/PokemonData';
-import { toHex } from '../core/core';
+import { toHex } from '../core/utils';
 
 interface PokemonRecordsProps {
   pokemon: PokemonData

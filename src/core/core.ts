@@ -1,19 +1,5 @@
 import { OFFSETS, PokemonData, WESTERN_CHARACTER_SET } from "../models/PokemonData";
-
-function isLittleEndian() {
-  const a8 = new Uint8Array(4);
-  const a32 = new Uint32Array(a8.buffer)
-  a32[0] = 0xFFAA3311;
-  return a8[0] !== 0xff;
-}
-
-const IS_LITTLE_ENDIAN = isLittleEndian();
-console.log("little endian", IS_LITTLE_ENDIAN);
-
-export function toHex(arg: number | string): string {
-  if (typeof arg === "string") return arg;
-  return "0x" + arg.toString(16).padStart(2, "0");
-}
+import { IS_LITTLE_ENDIAN, toHex } from "./utils";
 
 function read_u8_little_endian(memory: ArrayBuffer, b: number): number {
   const dv = new DataView(memory, b, 1);
